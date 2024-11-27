@@ -1,0 +1,172 @@
+pipeline {
+    agent any
+ 
+        environment {
+        BITBUCKET_URL = 'ssh://git@bitbucketenterprise.aws.novartis.net/scm/tispucengg/pucengg_mst_qa.git'
+        CREDENTIALS_ID = 'BitbucketKey'
+    }
+    stages {
+        stage('Cleanup Workspace') {
+            steps{
+                 cleanWs()
+            }
+        } 
+        stage('Setup parameters') {
+            steps { 
+                script {
+                    properties([
+                        parameters([
+                            choice(
+                                choices: ['CREATE','UPDATE'],
+                                name: 'OUOperation',
+                                description: "Select OU Operation To Create or Update"
+                            ),
+                            choice(
+                                choices: ['I AM NOT AWARE','YES, I HAVE ENSURED PROPER PROCESS IS FOLLOWED'],
+                                name: 'Disclaimer',
+                                description: "Please ensure that proper ITSM process (RFC/CRQ) is followed incase of any activity in regards to the managed CIs/Servers."
+                            ),
+                            string(
+                                description:'Enter CRQ ID',
+                                name:'CRQ ID'
+                            ),
+                            string(
+                                description:'Enter Tag',
+                                name:'TAG'
+                                
+                            )
+                         ])
+                    ])
+                }
+            }
+        }
+		stage('Check if ITSM process is followed.'){
+			steps{
+				sh """
+					if [ "$Disclaimer" = "I AM NOT AWARE" ]; then
+						echo "Disclaimer option marked as: $Disclaimer"
+						echo "You must be AWARE and Agree that ITSM Process is followed."
+						exit 1
+					fi
+                    aws sts get-caller-identity
+				"""
+			}
+		}
+        stage('Checkout Code') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "*/${TAG}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    userRemoteConfigs: [[
+                        url: "${BITBUCKET_URL}",
+                        credentialsId: "${CREDENTIALS_ID}"
+                    ]]
+                ])
+            }
+        }                             
+        
+        stage('Fetch and Show Impacting OU and accounts'){
+			steps{
+			    script {
+			        def STACKNAME="NVSGISMSTTST-TEST-01"
+			        def VALIDATE="Yes"
+                    def ENV="China"
+                    def ENV_TYPE="gb"
+			        sh """
+                    aws sts get-caller-identity
+                    case "$TAG" in 
+                        NVS_GB_*) echo "TAG PARAMTER VALID" ;;
+                        *) echo "TAG PARAMTER INVALID" ;;
+                    esac
+                    if [ "$OUOperation" = "UPDATE" ]; then
+                        echo "Asses the impacting OU and Accounts"
+                        cd Organization/
+                        cp template/NVSGISGLB-ORG-SCP.json aws_service_cft.json
+                        python3 scripts/CreateStackCFT.py $STACKNAME $VALIDATE $ENV $ENV_TYPE
+                    fi
+				"""
+			    }
+			}
+		}
+ 
+        stage('Review the impacting OU and Account list and approve the change.') {
+            steps {
+                script {
+                    input id: 'Approve', message: 'I have reviewed the Above Impacting OU and Impacting Accounts table?'
+                }
+            }
+        }
+ 
+        stage('OU Create-Or-Update') {
+            steps {
+                    script{
+                        def VALIDATE="No"
+                        def STACKNAME="NVSGISMSTTST-TEST-01"
+                        def ENV="China"
+                        def ENV_TYPE="gb"
+ 
+                        sh """
+ 
+
+                                #!/bin/bash
+                                pwd
+                                set +x
+                                export OUOperation=${OUOperation}
+                                cd Organization/
+ 
+                                pwd
+                                cp template/NVSGISGLB-ORG-SCP.json aws_service_cft.json
+                                pwd
+                                echo "Please Wait CloudFormation Stack Being Created....."
+                                
+                                python3 scripts/CreateStackCFT.py $STACKNAME $VALIDATE $ENV $ENV_TYPE                                
+ 
+                      """
+ 
+            }
+            }
+        }             
+ 
+ 
+    }
+    post { 
+        always {
+            withCredentials([usernamePassword(credentialsId: 'ServiceJenkinsUser', passwordVariable: 'BITBUCKETPASSWORD', usernameVariable: 'BITBUCKETUSERNAME')]) {
+				script {
+                    if (currentBuild.result == 'SUCCESS') {
+                        sh '''
+                            commitId=$(git rev-parse HEAD)
+                            state="SUCCESSFUL"
+                            jq -n --arg state "$state" --arg jenkinsBuildLink "$BUILD_URL" --arg jenkinsBuildNumber "$BUILD_NUMBER" '{
+                              "state": $state,
+                              "url" : $jenkinsBuildLink,
+                              "key": $jenkinsBuildNumber
+                            }' > build.json
+                            #curl -k -u "${BITBUCKETUSERNAME}:${BITBUCKETPASSWORD}" -H "Content-Type: application/json" -X POST \
+                            #    https://bitbucketenterprise.aws.novartis.net/rest/build-status/1.0/commits/${commitId} -d @build.json
+                            echo "Build succeeded!"
+                        '''
+                    } else {
+                        sh '''
+                            commitId=$(git rev-parse HEAD)
+                            state="FAILED"
+                            jq -n --arg state "$state" --arg jenkinsBuildLink "$BUILD_URL" --arg jenkinsBuildNumber "$BUILD_NUMBER" '{
+                              "state": $state,
+                              "url" : $jenkinsBuildLink,
+                              "key": $jenkinsBuildNumber
+                            }' > build.json
+                            #curl -k -u "${BITBUCKETUSERNAME}:${BITBUCKETPASSWORD}" -H "Content-Type: application/json" -X POST \
+                            #    https://bitbucketenterprise.aws.novartis.net/rest/build-status/1.0/commits/${commitId} -d @build.json
+                            echo "Build Failed!"
+                        '''
+                    }
+				}
+            
+            }
+            archiveArtifacts  artifacts: 'Organization/Backup/*,Organization/CurrentVersion/*', allowEmptyArchive: true
+            cleanWs()
+        }
+    }
+}
