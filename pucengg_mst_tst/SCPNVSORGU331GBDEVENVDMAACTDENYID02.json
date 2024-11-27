@@ -1,0 +1,177 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "S1",
+        "Effect": "Deny",
+        "Action": [
+          "iam:*"
+        ],
+        "Resource": [
+          "arn:aws:iam::*:role/R*_AWS_FLOWRW",
+          "arn:aws:iam::*:policy/P*AWSFLOWRW",
+          "arn:aws:iam::*:role/RCTR_AWS_*",
+          "arn:aws:iam::*:policy/PCTRAWS*",
+          "arn:aws:iam::*:role/RKMS_AWS_*",
+          "arn:aws:iam::*:policy/PKMS*",
+          "arn:aws:iam::*:role/RADT_AWS*",
+          "arn:aws:iam::*:policy/PADTAWS*",
+          "arn:aws:iam::*:role/RRSB_AWS_*",
+          "arn:aws:iam::*:policy/PRSB*",
+          "arn:aws:iam::*:role/RRCC_AWS_*",
+          "arn:aws:iam::*:policy/PRCC*",
+          "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+          "arn:aws:iam::*:policy/PIDYAWSRSAPAWSJIT*",
+          "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+          "arn:aws:iam::*:policy/PIDYAWSAWSGLOBALJIT*"
+        ],
+        "Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/RRSB_AWS_EC2ADT",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_*",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*EXECUTION",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*GLBPARMEXEC",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*RSAPIAMAPPEXEC",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAPADM",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "S2",
+        "Effect": "Deny",
+        "Action": [
+          "iam:PutRolePermissionsBoundary",
+          "iam:DeleteRolePermissionsBoundary"
+        ],
+        "Resource": [
+          "arn:aws:iam::*:policy/P*AWSIAMPERMBOUNDARY*"
+        ],
+        "Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_*",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*RSAPIAMAPPEXEC",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "S3",
+        "Effect": "Deny",
+        "Action": [
+          "cloudformation:*"
+        ],
+        "Resource": [
+          "arn:aws:cloudformation:*:*:stack/NVSGIS*",
+          "arn:aws:cloudformation:*:*:stack/StackSet-NVSGISGLB*"
+        ],
+        "Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*EXECUTION",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_*",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*GLBPARMEXEC",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*RSAPIAMAPPEXEC",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAP_ADM",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAPADM",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "S7",
+        "Effect": "Deny",
+        "Action": [
+          "iam:CreateServiceLinkedRole"
+        ],
+        "Resource": [
+          "*"
+        ],
+        "Condition": {
+          "StringLike": {
+            "iam:AWSServiceName": [
+              "ec2.amazonaws.com"
+            ]
+          },
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_*",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "S8",
+        "Effect": "Deny",
+        "Action": [
+          "lambda:*"
+        ],
+        "Resource": [
+          "arn:aws:lambda:*:*:function:LMF-COMPLIANCE-*"
+        ],
+        "Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_*",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "S11",
+        "Effect": "Deny",
+        "Action": [
+          "lambda:*"
+        ],
+        "Resource": [
+          "arn:aws:lambda:*:*:function:LMF-TIS*"
+        ],
+        "Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*GLBPARMEXEC",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_*",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      }
+    ]
+  }

@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1512442249000",
+      "Effect": "Deny",
+      "Action": [
+        "a4b:*",
+        "cloudhsm:*",
+        "crowd:*",
+        "datapipeline:*",
+        "deeplens:*",
+        "elastictranscoder:*",
+        "fms:*",
+        "freertos:*",
+        "machinelearning:*",
+        "macie:*",
+        "mediaconvert:*",
+        "medialive:*",
+        "mediapackage:*",
+        "mediastore:*",
+        "ram:*",
+        "resourcegroups:*",
+        "sdb:*",
+        "sumerian:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RSS_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_RSSTST_AWSENG",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RRCC_AWS_RSS_ADM"
+          ]
+        }
+      }
+    }
+  ]
+}

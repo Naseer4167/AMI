@@ -1,0 +1,171 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "a4b:*",
+        "acm-pca:*",
+        "apigateway:*",
+        "appstream:*",
+        "appsync:*",
+        "aws-marketplace:*",
+        "aws-marketplace-management:*",
+        "batch:*",
+        "clouddirectory:*",
+        "cloudfront:Create*",
+        "cloudfront:Delete*",
+        "cloudfront:Get*",
+        "cloudfront:TagResource",
+        "cloudfront:UntagResource",
+        "cloudfront:Update*",
+        "cloudhsm:*",
+        "cloudsearch:*",
+        "cognito-identity:*",
+        "cognito-sync:*",
+        "cognito-idp:*",
+        "comprehend:*",
+        "connect:*",
+        "crowd:*",
+        "datapipeline:*",
+        "dax:*",
+        "detective:*",
+        "devicefarm:*",
+        "directconnect:*",
+        "ds:*",
+        "dms:*",
+        "dynamodb:PurchaseReservedCapacityOfferings",
+        "ec2:DeleteVpnGateway",
+        "ec2:DetachVpnGateway",
+        "ec2:DeleteVpnConnection",
+        "ec2messages:*",
+        "elasticache:*",
+        "elasticbeanstalk:*",
+        "elasticfilesystem:*",
+        "elastictranscoder:*",
+        "es:*",
+        "execute-api:*",
+        "frauddetector:*",
+        "firehose:*",
+        "glue:*",
+        "guardduty:CreateMembers",
+        "guardduty:InviteMembers",
+        "guardduty:StartMonitoringMembers",
+        "imagebuilder:*",
+        "kinesis:*",
+        "kinesisanalytics:*",
+        "kinesisvideo:*",
+        "lex:*",
+        "machinelearning:*",
+        "mechanicalturk:*",
+        "macie:*",
+        "mediaconvert:*",
+        "medialive:*",
+        "mediapackage:*",
+        "mediastore:*",
+        "mgh:*",
+        "mgn:*",
+        "mobileanalytics:*",
+        "mobilehub:*",
+        "mobiletargeting:*",
+        "mq:*",
+        "neptunedb:*",
+        "networkmanager:*",
+        "opsworks:*",
+        "opsworks-cm:*",
+        "osis:*",
+        "polly:*",
+        "quicksight:*",
+        "ram:*",
+        "rds:PurchaseReservedDBInstancesOffering",
+        "redshift:PurchaseReservedNodeOffering",
+        "rekognition:*",
+        "route53:*",
+        "route53domains:*",
+        "route53resolver:Update*",
+        "route53resolver:Put*",
+        "route53resolver:Disassociate*",
+        "route53resolver:Associate*",
+        "route53resolver:UntagResource",
+        "route53resolver:Delete*",
+        "route53resolver:Create*",
+        "route53resolver:Import*",
+        "route53resolver:TagResource",
+        "sagemaker:*",
+        "sdb:*",
+        "securityhub:*",
+        "servicecatalog:*",
+        "servicediscovery:*",
+        "shield:*",
+        "signer:*",
+        "ssm:*",
+        "ssmmessages:*",
+        "states:*",
+        "storagegateway:*",
+        "swf:*",
+        "transcribe:*",
+        "translate:*",
+        "waf:*",
+        "waf-regional:AssociateWebACL",
+        "waf-regional:Create*",
+        "waf-regional:Delete*",
+        "waf-regional:DisassociateWebACL",
+        "waf-regional:List*",
+        "waf-regional:Put*",
+        "waf-regional:Update*",
+        "wam:*",
+        "workspaces:*",
+        "xray:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "Stmt1512442683000"
+    },
+    {
+      "Sid": "NVSAllowedRegionsDRRegionsNVSGlobalServices",
+      "Effect": "Deny",
+      "Resource": [
+        "*"
+      ],
+      "NotAction": [
+        "cloudtrail:*",
+        "sns:*",
+        "sqs:*",
+        "cloudwatch:*",
+        "logs:*",
+        "cloudformation:*",
+        "config:*"
+      ],
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": [
+            "us-east-1",
+            "eu-west-1",
+            "us-west-2",
+            "eu-central-1",
+            "ap-northeast-1"
+          ]
+        },
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      }
+    }
+  ]
+}

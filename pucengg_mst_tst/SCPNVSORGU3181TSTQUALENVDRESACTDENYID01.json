@@ -1,0 +1,40 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1512442249000",
+      "Effect": "Deny",
+      "Action": [
+        "a4b:*",
+        "cloudhsm:*",
+        "crowd:*",
+        "elastictranscoder:*",
+        "fms:*",
+        "freertos:*",
+        "macie:*",
+        "mediaconvert:*",
+        "medialive:*",
+        "mediapackage:*",
+        "mediastore:*",
+        "mgn:*",
+        "ram:*",
+        "resourcegroups:*",
+        "sdb:*",
+        "sumerian:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      }
+    }
+  ]
+}

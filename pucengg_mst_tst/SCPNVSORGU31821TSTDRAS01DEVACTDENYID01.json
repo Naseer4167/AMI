@@ -1,0 +1,25 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Statement1",
+      "Effect": "Deny",
+      "Action": [
+        "mgn:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ]
+        }
+      }
+    }
+  ]
+}

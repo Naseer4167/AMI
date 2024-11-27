@@ -1,0 +1,83 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BedrockLimitVPCE",
+      "Action": [
+        "bedrock:CreateModel*",
+        "bedrock:CreateProvisioned*",
+        "bedrock:DeleteCustom*",
+        "bedrock:DeleteModel*",
+        "bedrock:DeleteProvisioned*",
+        "bedrock:StopModel*",
+        "bedrock:UpdateProvisioned*",
+        "bedrock:AssociateAgent*",
+        "bedrock:DisassociateAgent*",
+        "bedrock:CreateAgent*",
+        "bedrock:CreateKnowledgeBase",
+        "bedrock:PrepareAgent",
+        "bedrock:Update*",
+        "bedrock:StartIngestionJob",
+        "bedrock:DeleteAgent*",
+        "bedrock:DeleteKnowledgeBase",
+        "bedrock:CreateDataSource",
+        "bedrock:DeleteDataSource",
+        "bedrock:InvokeAgent"
+      ],
+      "Resource": "*",
+      "Effect": "Deny",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:SourceVpce": [ 
+            "vpce-08754ffc04071a633",
+            "vpce-0f9f4e7d5c8e5af7b",
+            "vpce-0d1474362c5c9271b",
+            "vpce-08b4a4e85a0f0f8e6",
+            "vpce-0edad885773f32abf",
+            "vpce-0ddc9f478556e45a5",
+            "vpce-0ec8048649c66de8c",
+            "vpce-0ff2893c0f57ec621",
+            "vpce-0b29af2220fcc10fb",
+            "vpce-04c411e45d85a7bd5",
+            "vpce-0ce86ef58e9be554b",
+            "vpce-0ae0eba0412e3a0b7",
+            "vpce-0abb6275b89d75320",
+            "vpce-064105c142469bc40",
+            "vpce-06f649a545d17237c",
+            "vpce-0af20b15da1fe9fcd"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "BedrockLimitCustomModelInvokeVPCE",
+      "Action": [
+        "bedrock:InvokeModel*"
+      ],
+      "Resource": "arn:aws:bedrock:*:*:provisioned-model/*",
+      "Effect": "Deny",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:SourceVpce": [
+            "vpce-08754ffc04071a633",
+            "vpce-0f9f4e7d5c8e5af7b",
+            "vpce-0d1474362c5c9271b",
+            "vpce-08b4a4e85a0f0f8e6",
+            "vpce-0edad885773f32abf",
+            "vpce-0ddc9f478556e45a5",
+            "vpce-0ec8048649c66de8c",
+            "vpce-0ff2893c0f57ec621",
+            "vpce-0b29af2220fcc10fb",
+            "vpce-04c411e45d85a7bd5",
+            "vpce-0ce86ef58e9be554b",
+            "vpce-0ae0eba0412e3a0b7",
+            "vpce-0abb6275b89d75320",
+            "vpce-064105c142469bc40",
+            "vpce-06f649a545d17237c",
+            "vpce-0af20b15da1fe9fcd"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "a4b:*",
+        "apigateway:*",
+        "appstream:*",
+        "arsenal:*",
+        "appsync:*",
+        "batch:*",
+        "clouddirectory:*",
+        "cloudfront:Create*",
+        "cloudfront:Delete*",
+        "cloudfront:Get*",
+        "cloudfront:TagResource",
+        "cloudfront:UntagResource",
+        "cloudfront:Update*",
+        "cloudsearch:*",
+        "comprehend:*",
+        "connect:*",
+        "crowd:*",
+        "datapipeline:*",
+        "devicefarm:*",
+        "directconnect:*",
+        "discovery:*",
+        "dynamodb:PurchaseReservedCapacityOfferings",
+        "ec2:AttachInternetGateway",
+        "ec2:CreateInternetGateway",
+        "ec2:CreateEgressOnlyInternetGateway",
+        "ec2:AllocateAddress",
+        "ec2:AssociateAddress",
+        "ec2:CreateNatGateway",
+        "ec2:DeleteVpnGateway",
+        "ec2:DetachVpnGateway",
+        "ec2:DeleteVpnConnection",
+        "ec2messages:*",
+        "elasticache:*",
+        "elastictranscoder:*",
+        "execute-api:*",
+        "firehose:*",
+        "freertos:*",
+        "greengrass:*",
+        "iot:*",
+        "iotanalytics:*",
+        "lex:*",
+        "machinelearning:*",
+        "mechanicalturk:*",
+        "macie:*",
+        "mediaconvert:*",
+        "medialive:*",
+        "mediapackage:*",
+        "mediastore:*",
+        "mgh:*",
+        "mobileanalytics:*",
+        "mobilehub:*",
+        "mobiletargeting:*",
+        "mq:*",
+        "networkmanager:*",
+        "polly:*",
+        "quicksight:*",
+        "rds:PurchaseReservedDBInstancesOffering",
+        "redshift:PurchaseReservedNodeOffering",
+        "rekognition:*",
+        "sagemaker:*",
+        "sdb:*",
+        "shield:*",
+        "signer:*",
+        "storagegateway:*",
+        "swf:*",
+        "translate:*",
+        "transcribe:*",
+        "waf:*",
+        "waf-regional:AssociateWebACL",
+        "waf-regional:Create*",
+        "waf-regional:Delete*",
+        "waf-regional:DisassociateWebACL",
+        "waf-regional:List*",
+        "waf-regional:Put*",
+        "waf-regional:Update*",
+        "xray:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "Stmt1512443376000"
+    },
+    {
+      "Sid": "NVSAllowedRegionsDRRegionsNVSGlobalServicesLambdaS3",
+      "Effect": "Deny",
+      "NotAction": [
+        "cloudtrail:*",
+        "sns:*",
+        "sqs:*",
+        "cloudwatch:*",
+        "logs:*",
+        "cloudformation:*",
+        "config:*",
+        "lambda:*",
+        "s3:*",
+        "guardduty:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": [
+            "us-east-1",
+            "eu-west-1",
+            "us-west-2",
+            "eu-central-1",
+            "ap-northeast-1"
+          ]
+        },
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      }
+    }
+  ]
+}

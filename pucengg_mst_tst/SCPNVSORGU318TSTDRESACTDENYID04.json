@@ -1,0 +1,268 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyIngress",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:AuthorizeSecurityGroupIngress"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_DRAE01_HPCENVSETUP",
+            "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+            "arn:aws:iam::*:role/RIDY_AWS_RDRAS01_LAMBDASG_SECOMEA",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "BedrockLimitFoundationalModelInvokeVPCE",
+      "Action": [
+        "bedrock:InvokeModel*",
+        "bedrock:Retrieve*"
+      ],
+      "Resource": "arn:aws:bedrock:*::foundation-model/*",
+      "Effect": "Deny",
+      "Condition": {
+        "StringNotLike": {
+            "aws:SourceVpce": [
+                "vpce-*"
+            ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyResolver",
+      "Effect": "Deny",
+      "Action": [
+        "route53resolver:Update*",
+        "route53resolver:Put*",
+        "route53resolver:Disassociate*",
+        "route53resolver:Associate*",
+        "route53resolver:UntagResource",
+        "route53resolver:Delete*",
+        "route53resolver:Create*",
+        "route53resolver:Import*",
+        "route53resolver:TagResource"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ]
+        }
+      }
+    },
+    {
+      "Action": [
+        "ec2:ModifyInstanceMetadataOptions",
+        "ec2:Der*"
+      ],
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RRDRAR02*_AWS_DATA42*INTRANETJENKINS",
+            "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+            "arn:aws:iam::*:role/RRDRA*_AWS_IESCREATEDELETECUSTOMAMI",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Resource": "*",
+      "Sid": "DenyEc2LimitedActions"
+    },
+    {
+      "Sid": "RunRestrict",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "ForAnyValue:StringNotLike": {
+          "ec2:InstanceType": [
+						"t2.*",
+						"t3.*",
+						"t3a.*",
+						"t4g.*",
+						"m5ad.*",
+						"m5zn.*",
+						"m6a.*",
+						"m6i*.*",
+						"m7a.*",
+						"m7i.*",
+						"m7i-flex.*",
+						"m7g.*",
+						"m7gd.*",
+						"c5ad.*",
+						"c6a.*",
+						"c6i*.*",
+						"c7g.*",
+						"c7gd.*",
+						"c7gn.*",
+						"r5ad.*",
+						"r5b.*",
+						"r6a.*",
+						"r6gd.*",
+						"r6i*.*",
+						"r7a.*",
+						"r7g.*",
+						"r7gd.*",
+						"r7i.*",
+						"r7iz.*",
+						"r8g.*",
+						"u-3tb1.*",
+						"u-6tb1.*",
+						"u-9tb1.*",
+						"u-12tb1.*",
+						"u-18tb1.*",
+						"u-24tb1.*",
+						"u7i.*",
+						"u7in.*",
+						"x2i*.*",
+						"x2gd.*",
+						"z1d.*",
+						"g3s.*",
+						"g4*.*",
+						"g5.*",
+						"g6.*",
+						"gr6.*",
+						"p3.*",
+						"p3dn.*",
+						"p4d.*",
+						"p4de.*",
+						"p5.*",
+						"d3.*",
+						"d3en.*",
+						"i3en.*",
+						"i4i.*",
+						"im4gn.*",
+						"is4gen.*",
+						"i4g.*",
+						"hpc6id.*",
+						"hpc6a.*",
+						"hpc7a.*",
+						"hpc7g.*"
+          ]
+        },
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "ModifyRestrict",
+      "Effect": "Deny",
+      "Action": "ec2:ModifyInstanceAttribute",
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "ForAnyValue:StringNotLike": {
+          "ec2:Attribute/InstanceType": [
+						"t2.*",
+						"t3.*",
+						"t3a.*",
+						"t4g.*",
+						"m5ad.*",
+						"m5zn.*",
+						"m6a.*",
+						"m6i*.*",
+						"m7a.*",
+						"m7i.*",
+						"m7i-flex.*",
+						"m7g.*",
+						"m7gd.*",
+						"c5ad.*",
+						"c6a.*",
+						"c6i*.*",
+						"c7g.*",
+						"c7gd.*",
+						"c7gn.*",
+						"r5ad.*",
+						"r5b.*",
+						"r6a.*",
+						"r6gd.*",
+						"r6i*.*",
+						"r7a.*",
+						"r7g.*",
+						"r7gd.*",
+						"r7i.*",
+						"r7iz.*",
+						"r8g.*",
+						"u-3tb1.*",
+						"u-6tb1.*",
+						"u-9tb1.*",
+						"u-12tb1.*",
+						"u-18tb1.*",
+						"u-24tb1.*",
+						"u7i.*",
+						"u7in.*",
+						"x2i*.*",
+						"x2gd.*",
+						"z1d.*",
+						"g3s.*",
+						"g4*.*",
+						"g5.*",
+						"g6.*",
+						"gr6.*",
+						"p3.*",
+						"p3dn.*",
+						"p4d.*",
+						"p4de.*",
+						"p5.*",
+						"d3.*",
+						"d3en.*",
+						"i3en.*",
+						"i4i.*",
+						"im4gn.*",
+						"is4gen.*",
+						"i4g.*",
+						"hpc6id.*",
+						"hpc6a.*",
+						"hpc7a.*",
+						"hpc7g.*"
+          ]
+        },
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ]
+        }
+      }
+    }
+  ]
+}

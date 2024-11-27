@@ -1,0 +1,35 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RAM",
+      "Effect": "Deny",
+      "Action": [
+        "ram:CreateResourceShare",
+        "ram:DeleteResourceShare",
+        "ram:UpdateResourceShare",
+        "ram:SetDefaultPermissionVersion",
+        "ram:ReplacePermissionAssociations",
+        "ram:PromoteResourceShareCreatedFromPolicy",
+        "ram:PromotePermissionCreatedFromPolicy",
+        "ram:DisassociateResourceSharePermission",
+        "ram:AssociateResourceShare",
+        "ram:DeletePermission",
+        "ram:DeletePermissionVersion",
+        "ram:AssociateResourceSharePermission",
+        "ram:CreatePermission",
+        "ram:CreatePermissionVersion",
+        "ram:DisassociateResourceShare",
+        "ram:AcceptResourceShareInvitation"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotEquals": {
+          "ram:ShareOwnerAccountId": "839627828555"
+        }
+      }
+    }
+  ]
+}

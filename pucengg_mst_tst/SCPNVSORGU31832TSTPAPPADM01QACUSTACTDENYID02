@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "organizations:AcceptHandshake",
+        "organizations:AttachPolicy",
+        "organizations:CancelHandshake",
+        "organizations:CloseAccount",
+        "organizations:Create*",
+        "organizations:DeclineHandshake",
+        "organizations:Delete*",
+        "organizations:DeregisterDelegatedAdministrator",
+        "organizations:DetachPolicy",
+        "organizations:Disable*",
+        "organizations:Enable*",
+        "organizations:InviteAccountToOrganization",
+        "organizations:LeaveOrganization",
+        "organizations:MoveAccount",
+        "organizations:PutResourcePolicy",
+        "organizations:RegisterDelegatedAdministrator",
+        "organizations:RemoveAccountFromOrganization",
+        "organizations:TagResource",
+        "organizations:UntagResource",
+        "organizations:Update*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R???_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RRSID_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RIDY_AWS_RSS_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_RDBK_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_RDRA_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "S1"
+    }
+  ]
+}

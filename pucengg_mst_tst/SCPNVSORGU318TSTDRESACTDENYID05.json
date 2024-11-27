@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+		"Effect": "Deny",
+		"Action": "ec2:RunInstances",
+		"Resource": "arn:aws:ec2:*::image/*",
+		"Condition": {
+			"Null": {
+				"ec2:ResourceTag/Environment": "true"
+			},
+			"ArnNotLike": {
+              "aws:PrincipalARN": [
+                "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+                "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+                "arn:aws:iam::*:role/RIDY_AWS_DRAE01_HPCENVSETUP",
+                "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+                "arn:aws:iam::*:role/RRDRA*_AWS_SCPRDLAUNCH",
+                "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+                "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+                "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+              ]
+            }
+		}
+	},
+	{
+		"Action": [
+			"ec2:DeleteTags",
+			"ec2:CreateTags"
+		],
+		"Resource": "arn:aws:ec2:*::image/*",
+		"Effect": "Deny",
+		"Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/RIDY_AWS_DRAE01_HPCENVSETUP",
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RRDRA*_AWS_SCPRDLAUNCH",
+              "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+            ]
+          }
+        }
+	}
+  ]
+}

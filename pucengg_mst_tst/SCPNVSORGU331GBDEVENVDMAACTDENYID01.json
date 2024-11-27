@@ -1,0 +1,136 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "Stmt1512442249000",
+        "Effect": "Deny",
+        "Action": [
+          "a4b:*",
+          "aws-marketplace-management:*",
+          "aws-marketplace:*",
+          "chatbot:*",
+          "crowd:*",
+          "clouddirectory:*",
+          "cloudhsm:*",
+          "connect:*",
+          "dbqms:*",
+          "deepcomposer:*",
+          "deepracer:*",
+          "detective:*",
+          "directconnect:*",
+          "dlm:*",
+          "dms:*",
+          "ds:*",
+          "elasticache:*",
+          "elasticmapreduce:*",
+          "elastictranscoder:*",
+          "fms:*",
+          "freertos:*",
+          "frauddetector:*",
+          "guardduty:CreateMembers",
+          "guardduty:InviteMembers",
+          "guardduty:StartMonitoringMembers",
+          "importexport:*",
+          "macie:*",
+          "mechanicalturk:*",
+          "mediaconvert:*",
+          "medialive:*",
+          "mediapackage:*",
+          "mediastore:*",
+          "mgh:*",
+          "mq:*",
+          "networkmanager:*",
+          "opsworks-cm:*",
+          "opsworks:*",
+          "ram:*",
+          "resourcegroups:*",
+          "route53:*",
+          "route53domains:*",
+          "route53resolver:Update*",
+          "route53resolver:Put*",
+          "route53resolver:Disassociate*",
+          "route53resolver:Associate*",
+          "route53resolver:UntagResource",
+          "route53resolver:Delete*",
+          "route53resolver:Create*",
+          "route53resolver:Import*",
+          "route53resolver:TagResource",
+          "servicediscovery:*",
+          "securityhub:*",
+          "sdb:*",
+          "snowball:*",
+          "storagegateway:*",
+          "sumerian:*",
+          "wam:*",
+          "workspaces:*"
+        ],
+        "Resource": [
+          "*"
+        ],
+        "Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RRSAP*_AWS_SCPRDLAUNCH",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAP_ADM",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAPADM",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "DenyAMITagupdate",
+        "Effect": "Deny",
+        "Action": [
+          "ec2:DeleteTags",
+          "ec2:CreateTags"
+        ],
+        "Resource": "arn:aws:ec2:*::image/*",
+        "Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAP_ADM",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAPADM",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "LaunchingEC2withAMIsAndTags",
+        "Effect": "Deny",
+        "Action": "ec2:RunInstances",
+        "Resource": "arn:aws:ec2:*::image/ami-*",
+        "Condition": {
+          "ForAnyValue:StringNotEquals": {
+            "ec2:ResourceTag/Environment": "PRD01",
+            "ec2:ResourceTag/AWSElasticDisasterRecoveryManaged": "drs.amazonaws.com"
+          }
+        }
+      },
+      {
+        "Action": [
+          "ec2:CreateVolume",
+          "ec2:AttachVolume",
+          "ec2:RunInstances"
+        ],
+        "Condition": {
+          "Bool": {
+            "ec2:Encrypted": false
+          }
+        },
+        "Effect": "Deny",
+        "Resource": "*",
+        "Sid": "DenyCreationOfUnencryptedEBS"
+      }
+    ]
+  }

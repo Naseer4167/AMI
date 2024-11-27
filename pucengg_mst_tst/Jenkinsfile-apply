@@ -1,0 +1,50 @@
+pipeline {
+	agent any
+	stages{
+        stage('Make changes in AWS Organizations TST OU'){
+			steps{
+    				sh """
+                    	export AWS_REGION=us-east-1
+					 	bash ./scripts/apply-changes.sh
+                    """
+			}
+		}
+	}
+	post { 
+        always {
+            withCredentials([usernamePassword(credentialsId: 'ServiceJenkinsUser', passwordVariable: 'BITBUCKETPASSWORD', usernameVariable: 'BITBUCKETUSERNAME')]) {
+				script {
+                    if (currentBuild.result == 'SUCCESS') {
+                        sh '''
+                            commitId=$(git rev-parse HEAD)
+                            state="SUCCESSFUL"
+                            jq -n --arg state "$state" --arg jenkinsBuildLink "$BUILD_URL" --arg jenkinsBuildNumber "$BUILD_NUMBER" '{
+                              "state": $state,
+                              "url" : $jenkinsBuildLink,
+                              "key": $jenkinsBuildNumber
+                            }' > build.json
+                            curl -k -u "${BITBUCKETUSERNAME}:${BITBUCKETPASSWORD}" -H "Content-Type: application/json" -X POST \
+                                https://bitbucketenterprise.aws.novartis.net/rest/build-status/1.0/commits/${commitId} -d @build.json
+                            echo "Build succeeded!"
+                        '''
+                    } else {
+                        sh '''
+                            commitId=$(git rev-parse HEAD)
+                            state="FAILED"
+                            jq -n --arg state "$state" --arg jenkinsBuildLink "$BUILD_URL" --arg jenkinsBuildNumber "$BUILD_NUMBER" '{
+                              "state": $state,
+                              "url" : $jenkinsBuildLink,
+                              "key": $jenkinsBuildNumber
+                            }' > build.json
+                            curl -k -u "${BITBUCKETUSERNAME}:${BITBUCKETPASSWORD}" -H "Content-Type: application/json" -X POST \
+                                https://bitbucketenterprise.aws.novartis.net/rest/build-status/1.0/commits/${commitId} -d @build.json
+                            echo "Build Failed!"
+                        '''
+                    }
+				}
+            }
+			archiveArtifacts  artifacts: 'backup/*,currentversion/*', allowEmptyArchive: true
+            cleanWs()
+        }
+    }
+}

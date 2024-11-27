@@ -1,0 +1,211 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "S1",
+          "Action": [
+              "iam:DeactivateMFADevice",
+              "iam:DeleteAccessKey",
+              "iam:DeleteGroup",
+              "iam:UpdateGroup",
+              "iam:CreateLoginProfile",
+              "iam:CreateAccountAlias",
+              "iam:DetachGroupPolicy",
+              "iam:DetachUserPolicy",
+              "iam:ChangePassword",
+              "iam:PutGroupPolicy",
+              "iam:UpdateLoginProfile",
+              "iam:CreateGroup",
+              "iam:UpdateUser",
+              "iam:DeleteUserPolicy",
+              "iam:AttachUserPolicy",
+              "iam:UpdateAccessKey",
+              "iam:UpdateServerCertificate",
+              "iam:UpdateAccountPasswordPolicy",
+              "iam:CreateVirtualMFADevice",
+              "iam:CreateSAMLProvider",
+              "iam:CreateUser",
+              "iam:CreateAccessKey",
+              "iam:AddUserToGroup",
+              "iam:RemoveUserFromGroup",
+              "iam:EnableMFADevice",
+              "iam:ResyncMFADevice",
+              "iam:DeleteAccountAlias",
+              "iam:UpdateSAMLProvider",
+              "iam:DeleteLoginProfile",
+              "iam:DeleteAccountPasswordPolicy",
+              "iam:PutUserPermissionsBoundary",
+              "iam:DeleteUser",
+              "iam:DeleteUserPermissionsBoundary",
+              "iam:DeleteVirtualMFADevice",
+              "iam:AttachGroupPolicy",
+              "iam:PutUserPolicy",
+              "iam:DeleteGroupPolicy",
+              "iam:DeleteSAMLProvider",
+              "ec2:AssociateRouteTable",
+              "ec2:CreateSecurityGroup",
+              "ec2:DeleteSecurityGroup",
+              "ec2:RequestSpotFleet",
+              "ec2:CreateSubnet",
+              "ec2:CreateInternetGateway",
+              "ec2:DeleteVpcEndpointConnectionNotifications",
+              "ec2:ModifyVpcEndpointServiceConfiguration",
+              "ec2:ModifyVpcTenancy",
+              "ec2:ModifyVpcAttribute",
+              "ec2:ModifySecurityGroupRules",
+              "ec2:DeleteVpc",
+              "ec2:DeleteVpcEndpointServiceConfigurations",
+              "ec2:ModifyVpcEndpointConnectionNotification"
+          ],
+          "Effect": "Deny",
+          "Resource": "*",
+          "Condition": {
+              "ArnNotLike": {
+                  "aws:PrincipalARN": [
+                      "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+                      "arn:aws:iam::*:role/RIDY_AWS_DRAE01_HPCENVSETUP",
+                      "arn:aws:iam::*:role/RRDRA*_AWS_SCPRDLAUNCH",
+                      "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+                      "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+                      "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+                      "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE"
+                  ]
+              }
+          }
+      },
+      {
+          "Action": [
+              "ec2:CreateVpcEndpoint",
+              "ec2:DeleteVpcEndpoints",
+              "ec2:ModifyVpcEndpoint"
+          ],
+          "Condition": {
+              "Bool": {
+                  "aws:ViaAWSService": "false"
+              },
+              "ArnNotLike": {
+                  "aws:PrincipalARN": [
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+                      "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+                      "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+                      "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+                      "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE"
+                  ]
+              }
+          },
+          "Effect": "Deny",
+          "Resource": "*",
+          "Sid": "DenyVPC"
+      },
+      {
+          "Action": [
+              "ec2:CreateVpcEndpoint",
+              "ec2:DeleteVpcEndpoints",
+              "ec2:ModifyVpcEndpoint"
+          ],
+          "Condition": {
+              "ForAnyValue:StringEquals": {
+                  "aws:CalledViaFirst": [
+                      "cloudformation.amazonaws.com"
+                  ]
+              },
+              "ArnNotLike": {
+                  "aws:PrincipalARN": [
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+                      "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+                      "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+                      "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+                      "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE"
+                  ]
+              }
+          },
+          "Effect": "Deny",
+          "Resource": "*",
+          "Sid": "DenyCFN"
+      },
+      {
+          "Sid": "S2",
+          "Effect": "Deny",
+          "Action": [
+              "*"
+          ],
+          "Resource": [
+              "*"
+          ],
+          "Condition": {
+              "StringNotEquals": {
+                  "aws:RequestedRegion": [
+                      "us-east-1",
+                      "us-west-2",
+                      "eu-central-1",
+                      "eu-west-1",
+                      "ap-northeast-1",
+                      "us-west-1"
+                  ]
+              },
+              "ArnNotLike": {
+                  "aws:PrincipalARN": [
+                      "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*",
+                      "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*EXECUTION",
+                      "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*GLBPARMEXEC",
+                      "arn:aws:iam::*:role/RRCC_AWS_GLOBALVARLAMBDAINIT*",
+                      "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+                      "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+                      "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+                      "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE"
+                  ]
+              }
+          }
+      },
+      {
+          "Effect": "Deny",
+          "Action": [
+              "apigateway:POST",
+              "apigateway:PATCH",
+              "apigateway:PUT"
+          ],
+          "Resource": [
+              "arn:aws:apigateway:*::/restapis"
+          ],
+          "Condition": {
+              "ForAnyValue:StringNotEqualsIfExists": {
+                  "apigateway:Request/EndpointType": "PRIVATE"
+              },
+              "ArnNotLike": {
+                  "aws:PrincipalARN": [
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRAE*",
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRAS*",
+                      "arn:aws:iam::*:role/RDRAE*_AWS_APP01*",
+                      "arn:aws:iam::*:role/RDRAS*_AWS_APP01*",
+                      "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRA_AWSJIT*",
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRA_*",
+                      "arn:aws:iam::*:role/RRCC_AWS_RDRA_ADM",
+                      "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+                      "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+                      "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE"
+                  ]
+              }
+          }
+      },
+      {
+          "Effect": "Deny",
+          "Action": [
+              "apigateway:*"
+          ],
+          "Resource": [
+              "arn:aws:apigateway:*::/apis",
+              "arn:aws:apigateway:*::/restapis"
+          ],
+          "Condition": {          
+              "ArnNotLike": {
+                  "aws:PrincipalARN": [
+                      "arn:aws:iam::*:role/RIDY_AWS_RDRATST_AWSJIT1*"
+                    ]
+                }
+           }       
+       }
+   ]
+}

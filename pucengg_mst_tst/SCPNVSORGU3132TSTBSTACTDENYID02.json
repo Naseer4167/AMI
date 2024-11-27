@@ -1,0 +1,82 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "redshift:Authorize*",
+        "redshift:CancelQuerySession",
+        "redshift:CopyClusterSnapshot",
+        "redshift:Create*",
+        "redshift:Delete*",
+        "redshift:Disable*",
+        "redshift:Enable*",
+        "redshift:GetClusterCredentials",
+        "redshift:JoinGroup",
+        "redshift:Modify*",
+        "redshift:PurchaseReservedNodeOffering",
+        "redshift:RebootCluster",
+        "redshift:ResetClusterParameterGroup",
+        "redshift:Restore*",
+        "redshift:Revoke*",
+        "redshift:RotateEncryptionKey",
+        "rekognition:*",
+        "route53:*",
+        "route53domains:*",
+        "route53resolver:Update*",
+        "route53resolver:Put*",
+        "route53resolver:Disassociate*",
+        "route53resolver:Associate*",
+        "route53resolver:UntagResource",
+        "route53resolver:Delete*",
+        "route53resolver:Create*",
+        "route53resolver:Import*",
+        "route53resolver:TagResource",
+        "sagemaker:*",
+        "servicediscovery:*",
+        "servicecatalog:*",
+        "ses:*",
+        "shield:*",
+        "sdb:*",
+        "serverlessrepo:*",
+        "signer:*",
+        "snowball:*",
+        "ssm:*",
+        "ssmmessages:*",
+        "states:*",
+        "storagegateway:*",
+        "sumerian:*",
+        "swf:*",
+        "translate:*",
+        "transcribe:*",
+        "waf:*",
+        "waf-regional:AssociateWebACL",
+        "waf-regional:Create*",
+        "waf-regional:Delete*",
+        "waf-regional:DisassociateWebACL",
+        "waf-regional:List*",
+        "waf-regional:Put*",
+        "waf-regional:Update*",
+        "wam:*",
+        "workdocs:*",
+        "workmail:*",
+        "workspaces:*",
+        "xray:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "Stmt1512442854000"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "aoss:*",
+        "aws-marketplace-management:*",
+        "aws-marketplace:Search*",
+        "aws-marketplace:A*",
+        "aws-marketplace:C*",
+        "aws-marketplace:D*",
+        "aws-marketplace:G*",
+        "aws-marketplace:L*",
+        "aws-marketplace:P*",
+        "aws-marketplace:R*",
+        "aws-marketplace:T*",
+        "aws-marketplace:Update*",
+        "aws-marketplace:Start*",
+        "aws-marketplace:Untag*",        
+        "bedrock:*",
+        "emr-serverless:*",
+        "evidently:*",
+        "awsconnector:*",
+        "cloud9:*",
+        "cloudshell:*",
+        "codecommit:*",
+        "codedeploy:*",
+        "codepipeline:*",
+        "codestar:*",
+        "comprehendmedical:*",
+        "deeplens:*",
+        "ec2:CreateDefaultVpc",
+        "ec2:CreateDefaultSubnet",
+        "freertos:*",
+        "greengrass:*",
+        "groundtruthlabeling:*",
+        "iot:*",
+        "iotanalytics:*",
+        "iot-device-tester:*",
+        "iot1click:*",
+        "iotevents:*",
+        "iotsitewise:*",
+        "iotthingsgraph:*",
+        "resource-explorer-2:*",
+        "sumerian:*",
+        "timestream:*",
+        "launchwizard:*",
+        "q:*",
+        "qbusiness:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "Stmt1512442249000"
+    },
+    {
+      "Sid": "RequireImdsV2",
+      "Effect": "Deny",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringNotEquals": {
+          "ec2:MetadataHttpTokens": "required",
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ],
+          "aws:PrincipalAccount": [
+            "636711886667",
+            "728756811910"
+          ],
+          "aws:RequestTag/ClarityID": [
+            "046374",
+            "46374",
+            "043745",
+            "43745"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "MaxImdsHopLimit",
+      "Effect": "Deny",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "NumericGreaterThan": {
+          "ec2:MetadataHttpPutResponseHopLimit": "3"
+        },
+        "StringNotEquals": {
+          "aws:PrincipalAccount": [
+            "636711886667",
+            "728756811910"
+          ],
+          "aws:RequestTag/ClarityID": [
+            "046374",
+            "46374",
+            "043745",
+            "43745"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "RequireImdsV2ForAutoScaling",
+      "Effect": "Deny",
+      "Action": "autoscaling:CreateLaunchConfiguration",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "autoscaling:MetadataHttpTokens": "required",
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ],
+          "aws:PrincipalAccount": [
+            "636711886667",
+            "728756811910"
+          ],
+          "aws:RequestTag/ClarityID": [
+            "046374",
+            "46374",
+            "043745",
+            "43745"
+          ]
+        }
+      }
+    }
+  ]
+}

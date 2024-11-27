@@ -1,0 +1,130 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowLaunchWizard1",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:AllocateHosts",
+        "ec2:CreateDhcpOptions",
+        "ec2:CreateEgressOnlyInternetGateway",
+        "ec2:CreateVpcEndpoint",
+        "ec2:ModifySubnetAttribute",
+        "ec2:ModifyVpcAttribute",
+        "ec2:AssociateDhcpOptions",
+        "ec2:AssociateSubnetCidrBlock",
+        "ec2:AttachInternetGateway",
+        "ec2:DeleteDhcpOptions",
+        "ec2:DeleteInternetGateway",
+        "ec2:DeleteNatGateway",
+        "ec2:DeleteSecurityGroup",
+        "ec2:DeleteVpc",
+        "ec2:DetachInternetGateway",
+        "ec2:AssociateRouteTable",
+        "ec2:AssociateVpcCidrBlock",
+        "ec2:DeleteNetworkAcl",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:DeleteRoute",
+        "ec2:DeleteRouteTable",
+        "ec2:DeleteSubnet",
+        "ec2:DetachNetworkInterface",
+        "ec2:DisassociateAddress",
+        "ec2:DisassociateVpcCidrBlock",
+        "ec2:GetLaunchTemplateData",
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:GetConsoleOutput",
+        "ec2:GetPasswordData",
+        "ec2:ReleaseAddress",
+        "ec2:ReplaceRouteTableAssociation",
+        "ec2:RevokeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress",
+        "ec2:DisassociateRouteTable",
+        "ec2:DisassociateSubnetCidrBlock",
+        "ec2:ModifyInstancePlacement",
+        "ec2:DeletePlacementGroup",
+        "ec2:CreatePlacementGroup",
+        "ds:AddIpRoutes",
+        "ds:CreateComputer",
+        "ds:CreateMicrosoftAD",
+        "ds:DeleteDirectory"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "ForAnyValue:StringEquals": {
+          "aws:CalledVia": "launchwizard.amazonaws.com"
+        },
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RRCC_AWS_*",
+            "arn:aws:iam::*:role/RRDVYR_AWS_*",
+            "arn:aws:iam::*:role/RRSB_AWS_EC2ADT",
+            "arn:aws:iam::*:role/RIDY_AWS_RAA*",
+            "arn:aws:iam::*:role/RADT_AWS_*",
+            "arn:aws:iam::*:role/R???_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowLaunchWizard2",
+      "Effect": "Deny",
+      "Action": [
+        "applicationinsights:*",
+        "ds:Describe*",
+        "ds:List*",
+        "route53:ListHostedZones",
+        "resource-groups:CreateGroup",
+        "resource-groups:DeleteGroup",
+        "resource-groups:Get*",
+        "resource-groups:List*",
+        "servicequotas:GetServiceQuota",
+        "servicequotas:ListServiceQuotas",
+        "sqs:TagQueue",
+        "sqs:GetQueueUrl",
+        "sqs:AddPermission",
+        "sqs:ListQueues",
+        "sqs:DeleteQueue",
+        "sqs:GetQueueAttributes",
+        "sqs:ListQueueTags",
+        "sqs:CreateQueue",
+        "sqs:SetQueueAttributes",
+        "dynamodb:CreateTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:DeleteTable",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:TagResource",
+        "secretsmanager:UntagResource",
+        "secretsmanager:PutResourcePolicy",
+        "secretsmanager:DeleteResourcePolicy",
+        "secretsmanager:ListSecretVersionIds",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:GetRandomPassword",
+        "secretsmanager:ListSecrets",
+        "fsx:UntagResource",
+        "fsx:TagResource",
+        "fsx:DeleteFileSystem",
+        "fsx:ListTagsForResource"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RRCC_AWS_*",
+            "arn:aws:iam::*:role/RRDVYR_AWS_*",
+            "arn:aws:iam::*:role/RRSB_AWS_EC2ADT",
+            "arn:aws:iam::*:role/RIDY_AWS_RAA*",
+            "arn:aws:iam::*:role/RADT_AWS_*",
+            "arn:aws:iam::*:role/R???_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      }
+    }
+  ]
+}

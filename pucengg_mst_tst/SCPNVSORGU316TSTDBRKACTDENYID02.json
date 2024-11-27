@@ -1,0 +1,87 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "acm:AddTagsToCertificate",
+        "acm:DeleteCertificate",
+        "acm:GetCertificate",
+        "acm:ImportCertificate",
+        "acm:RemoveTagsFromCertificate",
+        "acm:RequestCertificate",
+        "acm:ResendValidationEmail",
+        "acm-pca:*",
+        "aoss:*",
+        "apigateway:*",
+        "application-autoscaling:Delete*",
+        "application-autoscaling:DeregisterScalableTarget",
+        "application-autoscaling:Put*",
+        "application-autoscaling:RegisterScalableTarget",
+        "appstream:*",
+        "appsync:*",
+        "artifact:*",
+        "athena:*",
+        "autoscaling:Attach*",
+        "autoscaling:Batch*",
+        "autoscaling:CompleteLifecycleAction",
+        "autoscaling:Create*",
+        "autoscaling:Delete*",
+        "autoscaling:Detach*",
+        "autoscaling:DisableMetricsCollection",
+        "autoscaling:EnableMetricsCollection",
+        "autoscaling:EnterStandby",
+        "autoscaling:ExecutePolicy",
+        "autoscaling:ExitStandby",
+        "autoscaling:Put*",
+        "autoscaling:RecordLifecycleActionHeartbeat",
+        "autoscaling:ResumeProcesses",
+        "autoscaling:Set*",
+        "autoscaling:SuspendProcesses",
+        "autoscaling:TerminateInstanceInAutoScalingGroup",
+        "autoscaling:UpdateAutoScalingGroup",
+        "autoscaling-plans:*",
+        "awsconnector:*",
+        "aws-marketplace:*",
+        "aws-marketplace-management:*",
+        "aws-portal:*",
+        "a4b:*",
+        "ec2:AcceptReservedInstancesExchangeQuote",
+        "ec2:AcceptVpcEndpointConnections",
+        "ec2:AcceptVpcPeeringConnection",
+        "ec2:AllocateAddress",
+        "ec2:AllocateHosts",
+        "ec2:AssignIpv6Addresses",
+        "ec2:AssignPrivateIpAddresses",
+        "ec2:AssociateAddress",
+        "ec2:AssociateDhcpOptions",
+        "ec2:AssociateIamInstanceProfile",
+        "ec2:AssociateSubnetCidrBlock",
+        "ec2:AssociateVpcCidrBlock",
+        "ec2:AttachClassicLinkVpc",
+        "ec2:AttachNetworkInterface",
+        "ec2:AttachVpnGateway",
+        "ec2:BundleInstance",
+        "emr-serverless:*",
+        "evidently:*",
+        "resource-explorer-2:*",
+        "q:*",
+        "qbusiness:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RIDY_AWS_RDBKTST_AWSJIT1",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "Stmt1514962179000"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+pipeline {
+	agent any
+	stages{
+        stage('Rollback last applied changes from AWS Organizations'){
+			steps{
+    				sh """
+					 	bash ./scripts/scp-sync.sh
+                    """
+			}
+		}
+	}
+	post { 
+        always { 
+            cleanWs()
+        }
+    }
+}

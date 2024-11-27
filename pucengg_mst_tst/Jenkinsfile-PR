@@ -1,0 +1,22 @@
+pipeline {
+	agent any
+	stages {
+		stage('Execute SCP pre merge checks') {
+			steps {
+				withCredentials([usernamePassword(credentialsId: 'ServiceJenkinsUser', passwordVariable: 'BITBUCKETPASSWORD', usernameVariable: 'BITBUCKETUSERNAME')]) {
+					sh '''
+				        echo "BITBUCKET_SOURCE_BRANCH ${BITBUCKET_SOURCE_BRANCH}"
+				        echo "BITBUCKET_TARGET_BRANCH ${BITBUCKET_TARGET_BRANCH}"
+				        echo "BITBUCKET_PULL_REQUEST_LINK ${BITBUCKET_PULL_REQUEST_LINK}"
+						bash ./scripts/pr-checks.sh $BITBUCKETUSERNAME $BITBUCKETPASSWORD
+					'''
+				}
+			}
+		}
+	}
+	post { 
+        always { 
+            cleanWs()
+        }
+    }
+}

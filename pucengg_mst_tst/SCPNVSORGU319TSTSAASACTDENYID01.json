@@ -1,0 +1,198 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "awsconnector:*",
+        "aws-marketplace-management:*",
+        "aws-marketplace:Search*",
+        "aws-marketplace:A*",
+        "aws-marketplace:C*",
+        "aws-marketplace:D*",
+        "aws-marketplace:G*",
+        "aws-marketplace:L*",
+        "aws-marketplace:P*",
+        "aws-marketplace:R*",
+        "aws-marketplace:T*",
+        "aws-marketplace:Update*",
+        "aws-marketplace:Start*",
+        "aws-marketplace:Untag*",        
+        "chime:*",
+        "cloudtrail:DeleteTrail",
+        "cloudtrail:UpdateTrail",
+        "config:DeleteConfigurationRecorder",
+        "cloudtrail:StopLogging",
+        "config:DeleteConfigurationAggregator",
+        "config:DeleteConfigRule",
+        "guardduty:DeleteDetector",
+        "guardduty:DeleteIPSet",
+        "guardduty:DeleteThreatIntelSet",
+        "guardduty:DeleteMembers",
+        "guardduty:DisassociateMembers",
+        "guardduty:DisassociateFromMasterAccount",
+        "guardduty:StopMonitoringMembers",
+        "config:DeleteDeliveryChannel",
+        "config:StopConfigurationRecorder",
+        "discovery:*",
+        "ec2:DeleteFlowLogs",
+        "ec2:ModifyVpcTenancy",
+        "ec2:RestoreAddressToClassic",
+        "ec2:MoveAddressToVpc",
+        "ec2:DisableVpcClassicLink",
+        "ec2:DisableVpcClassicLinkDnsSupport",
+        "ec2:EnableVpcClassicLinkDnsSupport",
+        "ec2:DetachClassicLinkVpc",
+        "ec2:EnableVpcClassicLink",
+        "ec2:AttachClassicLinkVpc",
+        "ec2:PurchaseHostReservation",
+        "gamelift:*",
+        "groundstation:*",
+        "iq:*",
+        "iq-permission:*",
+        "kms:ScheduleKeyDeletion",
+        "kms:DisableKeyRotation",
+        "lightsail:*",
+        "mgn:*",
+        "organizations:*",
+        "outposts:*",
+        "purchase-orders:*",
+        "savingsplans:*",
+        "workdocs:*",
+        "workmail:*",
+        "workmailmessageflow:*",
+        "zocalo:*",
+        "apprunner:*",
+        "timestream:*",
+        "inspector2:*",
+        "rbin:*",
+        "memorydb:*",
+        "ecr-public:*",
+        "q:*",
+        "qbusiness:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R???_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RIDY_AWS_RAAS_AWSJIT1",
+            "arn:aws:iam::*:role/RRCC_AWS_RAASADM",
+            "arn:aws:iam::*:role/RRCC_AWS_RAAS_ADM",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "CDeny01"
+    },
+    {
+      "Sid": "DenyRootUserActions",
+      "Effect": "Deny",
+      "NotAction": [
+        "s3:List*",
+        "s3:GetBucketLocation",
+        "s3:DeleteBucketPolicy",
+        "s3:GetBucketPolicy"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:root"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "EFSEncEnf",
+      "Effect": "Deny",
+      "Action": [
+        "elasticfilesystem:CreateFileSystem"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "Bool": {
+          "elasticfilesystem:Encrypted": [
+            "false"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyVPCPeering",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:AcceptVpcPeeringConnection"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R???_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowSSLRequestsOnlys3",
+      "Action": "s3:*",
+      "Effect": "Deny",
+      "Resource": [
+        "arn:aws:s3:::*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "DenyIDYJITRoleUpdate",
+      "Effect": "Deny",
+      "Action": [
+        "iam:CreateRole",
+        "iam:AttachRolePolicy",
+        "iam:CreatePolicy",
+        "iam:CreatePolicyVersion",
+        "iam:SetDefaultPolicyVersion",
+        "iam:Delete*",
+        "iam:Update*"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:role/RIDY_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PIDYAWSAWSJIT*",
+        "arn:aws:iam::*:role/RIDY_AWS_RAAS_AWSJIT1",
+        "arn:aws:iam::*:policy/PIDYAWSRAASAWSJIT*",
+        "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+        "arn:aws:iam::*:policy/PIDYAWSAWSGLOBALJIT*"
+      ],
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*_AWS_IAMFULLADM",
+            "arn:aws:iam::*:role/RIDY_AWS_RAAS_IAMFULLADM",
+            "arn:aws:iam::*:role/R*_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/R*_AWS_IAMADM",
+            "arn:aws:iam::*:role/R*_AWS_IAMMNG",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      }
+    }
+  ]
+}

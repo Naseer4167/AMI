@@ -1,0 +1,94 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RS3AFoundationalServices",
+      "Effect": "Deny",
+      "NotAction": [
+        "aws-portal:*",
+        "backup:*",
+        "batch:*",
+        "budgets:*",
+        "ce:*",
+        "cloudformation:*",
+        "cloudtrail:*",
+        "cloudwatch:*",
+        "config:*",
+        "events:*",
+        "glacier:*",
+        "guardduty:*",
+        "health:*",
+        "iam:*",
+        "kms:*",
+        "lambda:*",
+        "logs:*",
+        "s3:*",
+        "servicequotas:*",
+        "sns:*",
+        "sqs:*",
+        "sts:*",
+        "support:*",
+        "tag:*",
+        "trustedadvisor:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RRCC_AWS_RS3A_ADM",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RIDY_AWS_RS3ATST_AWSJIT*",
+            "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "S2RegionRestriction",
+      "Effect": "Deny",
+      "NotAction": [
+        "cloudformation:*",
+        "cloudtrail:*",
+        "cloudwatch:*",
+        "config:*",
+        "guardduty:*",
+        "logs:*",
+        "sns:*",
+        "sqs:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": [
+            "us-east-1",
+            "us-west-2",
+            "eu-central-1",
+            "eu-west-1",
+            "ap-northeast-1"
+          ]
+        },
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/RCTR_AWS_CTRLGS",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+            "arn:aws:iam::*:role/RIDY_AWS_RS3ATST_AWSJITl*",
+            "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*EXECUTION",
+            "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*GLBPARMEXEC",
+            "arn:aws:iam::*:role/RRCC_AWS_GLOBALVARLAMBDAINIT*",
+            "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/RRCC_AWS_QUALYSCONN",
+            "arn:aws:iam::*:role/RRCC_AWS_RS3A_ADM",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE"
+          ]
+        }
+      }
+    }
+  ]
+}

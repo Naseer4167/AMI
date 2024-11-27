@@ -1,0 +1,274 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "apprunner:*",
+        "awsconnector:*",
+        "chime:*",
+        "cloudtrail:DeleteTrail",
+        "cloudtrail:StopLogging",
+        "config:DeleteConfigRule",
+        "config:DeleteConfiguration*",
+        "config:DeleteDeliveryChannel",
+        "config:StopConfiguration*",
+        "discovery:*",
+        "ec2:AllocateHosts",
+        "ec2:ModifyHosts",
+        "ec2:ReleaseHosts",
+        "ec2:AttachClassicLinkVpc",
+        "ec2:DeleteFlowLogs",
+        "ec2:DetachClassicLinkVpc",
+        "ec2:DisableVpcClassicLink*",
+        "ec2:EnableVpcClassicLink*",
+        "ec2:ModifyVpcTenancy",
+        "ec2:MoveAddressToVpc",
+        "ec2:PurchaseHostReservation",
+        "ec2:RestoreAddressToClassic",
+        "ecr-public:*",
+        "gamelift:*",
+        "groundstation:*",
+        "guardduty:DeleteDetector",
+        "guardduty:DeleteIPSet",
+        "guardduty:DeleteMembers",
+        "guardduty:DeleteThreatIntelSet",
+        "guardduty:DisassociateFromMaster*",
+        "guardduty:DisassociateMembers",
+        "guardduty:StopMonitoringMembers",
+        "inspector2:*",
+        "iq-permission:*",
+        "iq:*",
+        "kms:DisableKeyRotation",
+        "kms:ScheduleKeyDeletion",
+        "lightsail:*",
+        "memorydb:*",
+        "outposts:*",
+        "purchase-orders:*",
+        "rbin:*",
+        "savingsplans:*",
+        "timestream:*",
+        "workdocs:*",
+        "workmail:*",
+        "workmailmessageflow:*",
+        "zocalo:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R???_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RRSID_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RIDY_AWS_RSS_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_RDBK_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_RDRA_AWSJIT1",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "S1"
+    },
+    {
+      "Sid": "S2",
+      "Effect": "Deny",
+      "Action": [
+        "rds:CreateDBInstance"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "ForAnyValue:StringEquals": {
+          "rds:DatabaseEngine": [
+            "mariadb",
+            "mysql",
+            "oracle-ee",
+            "oracle-se2",
+            "oracle-se1",
+            "oracle-se",
+            "postgres",
+            "sqlserver-ee",
+            "sqlserver-se",
+            "sqlserver-ex",
+            "sqlserver-web"
+          ]
+        },
+        "Bool": {
+          "rds:StorageEncrypted": "false"
+        }
+      }
+    },
+    {
+      "Sid": "S3",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:ModifySubnet*",
+        "ec2:CreateSubnet"
+      ],
+      "Resource": [
+        "arn:aws:ec2:*:*:subnet/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "ec2:Attribute/MapPublicIpOnLaunch": [
+            "true"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "S4",
+      "Effect": "Deny",
+      "Action": [
+        "rds:CreateDBCluster"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "Bool": {
+          "rds:StorageEncrypted": "false"
+        }
+      }
+    },
+    {
+      "Sid": "S5",
+      "Effect": "Deny",
+      "NotAction": [
+        "s3:List*",
+        "s3:GetBucketLocation",
+        "s3:DeleteBucketPolicy",
+        "s3:GetBucketPolicy"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:root"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "S6",
+      "Effect": "Deny",
+      "Action": [
+        "elasticfilesystem:CreateFileSystem"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "Bool": {
+          "elasticfilesystem:Encrypted": [
+            "false"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "S7",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:AcceptVpcPeering*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R???_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RRSID_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RIDY_AWS_RSS_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_RDBK_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_RDRA_AWSJIT1",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "S8",
+      "Action": "s3:*",
+      "Effect": "Deny",
+      "Resource": [
+        "arn:aws:s3:::*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "S9",
+      "Effect": "Deny",
+      "Action": [
+        "iam:CreateRole",
+        "iam:AttachRolePolicy",
+        "iam:CreatePolicy",
+        "iam:CreatePolicyVersion",
+        "iam:SetDefaultPolicyVersion",
+        "iam:Delete*",
+        "iam:Update*"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:role/RRSA_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PRSAAWSAWSJIT*",
+        "arn:aws:iam::*:role/RRSB_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PRSBAWSAWSJIT*",
+        "arn:aws:iam::*:role/RRCC_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PRCCAWSAWSJIT*",
+        "arn:aws:iam::*:role/RRSE_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PRSEAWSAWSJIT*",
+        "arn:aws:iam::*:role/RIDY_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PIDYAWSAWSJIT*",
+        "arn:aws:iam::*:role/RBCK_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PBCKAWSAWSJIT*",
+        "arn:aws:iam::*:role/RBST_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PBSTAWSAWSJIT*",
+        "arn:aws:iam::*:role/RDMZ_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PDMZAWSAWSJIT*",
+        "arn:aws:iam::*:role/RADT_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PADTAWSAWSJIT*",
+        "arn:aws:iam::*:role/RCTR_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PCTRAWSAWSJIT*",
+        "arn:aws:iam::*:role/RRSI_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PRSIAWSAWSJIT*",
+        "arn:aws:iam::*:role/RRSID_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PRSIDAWSAWSJIT*",
+        "arn:aws:iam::*:role/RRDI_AWS_AWSJIT*",
+        "arn:aws:iam::*:policy/PRDIAWSAWSJIT*",
+        "arn:aws:iam::*:role/RIDY_AWS_RSS_AWSJIT1",
+        "arn:aws:iam::*:policy/PIDYAWSRSSAWSJIT*",
+        "arn:aws:iam::*:role/RIDY_AWS_RDRA_AWSJIT1",
+        "arn:aws:iam::*:policy/PIDYAWSRDRAAWSJIT*",
+        "arn:aws:iam::*:role/RIDY_AWS_RDBK_AWSJIT1",
+        "arn:aws:iam::*:policy/PIDYAWSRDBKAWSJIT*",
+        "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+        "arn:aws:iam::*:policy/PIDYAWSAWSGLOBALJIT*"
+      ],
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*_AWS_IAMFULLADM",
+            "arn:aws:iam::*:role/RIDY_AWS_RSS_IAMFULLADM",
+            "arn:aws:iam::*:role/RIDY_AWS_RDBK_IAMFULLADM",
+            "arn:aws:iam::*:role/RIDY_AWS_RDRA_IAMFULLADM",
+            "arn:aws:iam::*:role/R*_AWS_IAMMASTER",
+            "arn:aws:iam::*:role/R*_AWS_IAMADM",
+            "arn:aws:iam::*:role/R*_AWS_IAMMNG",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      }
+    }
+  ]
+}

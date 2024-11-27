@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "connect:*",
+        "crowd:*",
+        "ec2:AttachInternetGateway",
+        "ec2:CreateInternetGateway",
+        "ec2:CreateEgressOnlyInternetGateway",
+        "ec2:AllocateAddress",
+        "ec2:AssociateAddress",
+        "ec2:CreateNatGateway",
+        "mechanicalturk:*",
+        "mgh:*",
+        "shield:*",
+        "osis:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/R*TST_AWS_AWSJIT*",
+            "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+            "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+            "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??"
+          ]
+        }
+      },
+      "Effect": "Deny",
+      "Sid": "Stmt1512431493000"
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "apigateway:POST"
+      ],
+      "Resource": [
+        "arn:aws:apigateway:*::/restapis"
+      ],
+      "Condition": {
+        "ForAnyValue:StringNotEqualsIfExists": {
+          "apigateway:Request/EndpointType": "PRIVATE"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "apigateway:POST",
+        "apigateway:PUT"
+      ],
+      "Resource": [
+        "arn:aws:apigateway:*::/apis"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "apigateway:PATCH"
+      ],
+      "Resource": [
+        "arn:aws:apigateway:*::/restapis/*"
+      ],
+      "Condition": {
+        "ForAnyValue:StringEqualsIfExists": {
+          "apigateway:Request/EndpointType": [
+            "EDGE",
+            "REGIONAL"
+          ]
+        }
+      }
+    }
+  ]
+}

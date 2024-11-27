@@ -1,0 +1,151 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "S1",
+        "Action": [
+          "iam:DeactivateMFADevice",
+          "iam:DeleteAccessKey",
+          "iam:DeleteGroup",
+          "iam:UpdateGroup",
+          "iam:CreateLoginProfile",
+          "iam:CreateAccountAlias",
+          "iam:DetachGroupPolicy",
+          "iam:DetachUserPolicy",
+          "iam:ChangePassword",
+          "iam:PutGroupPolicy",
+          "iam:UpdateLoginProfile",
+          "iam:CreateGroup",
+          "iam:UpdateUser",
+          "iam:DeleteUserPolicy",
+          "iam:AttachUserPolicy",
+          "iam:UpdateAccessKey",
+          "iam:UpdateServerCertificate",
+          "iam:UpdateAccountPasswordPolicy",
+          "iam:CreateVirtualMFADevice",
+          "iam:CreateSAMLProvider",
+          "iam:CreateUser",
+          "iam:CreateAccessKey",
+          "iam:AddUserToGroup",
+          "iam:RemoveUserFromGroup",
+          "iam:EnableMFADevice",
+          "iam:ResyncMFADevice",
+          "iam:DeleteAccountAlias",
+          "iam:UpdateSAMLProvider",
+          "iam:DeleteLoginProfile",
+          "iam:DeleteAccountPasswordPolicy",
+          "iam:PutUserPermissionsBoundary",
+          "iam:DeleteUser",
+          "iam:DeleteUserPermissionsBoundary",
+          "iam:CreateOpenIDConnectProvider",
+          "iam:DeleteVirtualMFADevice",
+          "iam:AttachGroupPolicy",
+          "iam:PutUserPolicy",
+          "iam:DeleteGroupPolicy",
+          "iam:AddClientIDToOpenIDConnectProvider",
+          "iam:DeleteSAMLProvider",
+          "ecs:DeregisterContainerInstance",
+          "ecs:RegisterContainerInstance",
+          "ec2:AssociateRouteTable",
+          "ec2:CreateRoute",
+          "ec2:CreateRouteTable",
+          "ec2:CreateSecurityGroup",
+          "ec2:CreateVpc",
+          "ec2:RequestSpotFleet",
+          "ec2:CreateSubnet",
+          "ec2:CreateInternetGateway",
+          "ec2:DeleteVpcEndpointConnectionNotifications",
+          "ec2:ModifyVpcEndpointServiceConfiguration",
+          "ec2:DeleteVpcEndpoints",
+          "ec2:DeleteSecurityGroup",
+          "ec2:ModifyVpcTenancy",
+          "ec2:ModifyVpcAttribute",
+          "ec2:ModifySecurityGroupRules",
+          "ec2:DeleteVpc",
+          "ec2:DeleteVpcEndpointServiceConfigurations",
+          "ec2:ModifyVpcEndpointConnectionNotification",
+          "ec2:ModifyVpcEndpoint"
+        ],
+        "Effect": "Deny",
+        "Resource": "*",
+        "Condition": {
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_*",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/RRSAP*_AWS_SCPRDLAUNCH",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAP_ADM",
+              "arn:aws:iam::*:role/RRCC_AWS_RSAPADM",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "S2",
+        "Effect": "Deny",
+        "Action": [
+          "*"
+        ],
+        "Resource": [
+          "*"
+        ],
+        "Condition": {
+          "StringNotEquals": {
+            "aws:RequestedRegion": [
+              "us-east-1",
+              "us-west-2",
+              "eu-central-1",
+              "eu-west-1"
+            ]
+          },
+          "ArnNotLike": {
+            "aws:PrincipalARN": [
+              "arn:aws:iam::*:role/RRCC_AWS_IAMMASTER",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_AWSJIT*",
+              "arn:aws:iam::*:role/RIDY_AWS_RSAP_*",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*EXECUTION",
+              "arn:aws:iam::*:role/RRCC_AWS_CFNSTACKSET*GLBPARMEXEC",
+              "arn:aws:iam::*:role/RRCC_AWS_GLOBALVARLAMBDAINIT*",
+              "arn:aws:iam::*:role/RWIZ_AWS_ACCESS_ROLE",
+              "arn:aws:iam::*:role/RCTR_AWS_CTRLGS",
+              "arn:aws:iam::*:role/RRCC_AWS_QUALYSCONN",
+              "arn:aws:iam::*:role/RIDY_AWS_AWSGLOBALJIT??",
+              "arn:aws:iam::*:role/RWIZ_AWS_SCANNER_ROLE",
+              "arn:aws:iam::*:role/stacksets-exec-*"
+            ]
+          }
+        }
+      },
+      {
+        "Action": [
+          "ec2:RunInstances"
+        ],
+        "Condition": {
+          "StringNotEquals": {
+            "ec2:MetadataHttpTokens": "required"
+          }
+        },
+        "Effect": "Deny",
+        "Resource": "arn:aws:ec2:*:*:instance/*",
+        "Sid": "IMDSv2Enablement"
+      },
+      {
+        "Action": [
+          "autoscaling:CreateLaunchConfiguration"
+        ],
+        "Condition": {
+          "StringNotEquals": {
+            "autoscaling:MetadataHttpTokens": "required"
+          }
+        },
+        "Effect": "Deny",
+        "Resource": "*",
+        "Sid": "IMDSv2EnablementAutoScaling"
+      }
+    ]
+  }
